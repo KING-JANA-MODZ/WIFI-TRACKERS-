@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HACKER LIVE MONITOR</title>
+
+<style>
+body {
+    margin:0;
+    background:black;
+    color:#00ff00;
+    font-family:Courier New;
+    overflow:hidden;
+}
+
+canvas {
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+.container {
+    padding:20px;
+}
+
+.card {
+    border:1px solid #00ff00;
+    padding:20px;
+    margin:20px 0;
+    border-radius:10px;
+    box-shadow:0 0 20px #00ff00;
+}
+
+h1 {
+    text-shadow:0 0 10px #00ff00;
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container">
+    <h1>💀 SYSTEM LIVE MONITOR 💀</h1>
+
+    <div class="card">
+        <h2>🕒 LIVE TIME</h2>
+        <p id="clock"></p>
+    </div>
+
+    <div class="card">
+        <h2>🌐 NETWORK STATUS</h2>
+        <p id="network"></p>
+    </div>
+
+    <div class="card">
+        <h2>💾 RAM USAGE</h2>
+        <p id="ram"></p>
+    </div>
+</div>
+
+<script>
+// Clock
+function updateClock(){
+    document.getElementById("clock").innerText =
+        new Date().toLocaleString();
+}
+setInterval(updateClock,1000);
+
+// Network
+function updateNetwork(){
+    document.getElementById("network").innerText =
+        navigator.onLine ? "ONLINE ✅" : "OFFLINE ❌";
+}
+setInterval(updateNetwork,1000);
+
+// RAM
+function updateRAM(){
+    if(performance.memory){
+        let ram = performance.memory.usedJSHeapSize/1048576;
+        document.getElementById("ram").innerText =
+        ram.toFixed(2)+" MB Used";
+    }else{
+        document.getElementById("ram").innerText =
+        "RAM Info Not Supported";
+    }
+}
+setInterval(updateRAM,2000);
+
+// Matrix Background
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+canvas.height=window.innerHeight;
+canvas.width=window.innerWidth;
+
+let letters="01";
+letters=letters.split("");
+
+let fontSize=14;
+let columns=canvas.width/fontSize;
+let drops=[];
+for(let x=0;x<columns;x++)
+drops[x]=1;
+
+function draw(){
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="#0f0";
+ctx.font=fontSize+"px arial";
+for(let i=0;i<drops.length;i++){
+let text=letters[Math.floor(Math.random()*letters.length)];
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+drops[i]=0;
+drops[i]++;
+}
+}
+setInterval(draw,33);
+</script>
+
+</body>
+  </html>
