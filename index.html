@@ -2,38 +2,70 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HACKER LIVE MONITOR</title>
+<title>SUPREME DARK LAB 4.0</title>
 
 <style>
-body {
-    margin:0;
-    background:black;
-    color:#00ff00;
-    font-family:Courier New;
-    overflow:hidden;
+body{
+margin:0;
+background:black;
+color:#00ff00;
+font-family:Courier New;
+overflow:hidden;
 }
-
-canvas {
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:-1;
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
 }
-
-.container {
-    padding:20px;
+.container{
+padding:15px;
 }
-
-.card {
-    border:1px solid #00ff00;
-    padding:20px;
-    margin:20px 0;
-    border-radius:10px;
-    box-shadow:0 0 20px #00ff00;
+h1{
+text-shadow:0 0 15px #00ff00;
 }
-
-h1 {
-    text-shadow:0 0 10px #00ff00;
+#terminal{
+border:1px solid #00ff00;
+padding:10px;
+height:180px;
+overflow:auto;
+box-shadow:0 0 15px #00ff00;
+margin-top:10px;
+}
+button,select,input{
+background:black;
+color:#00ff00;
+border:1px solid #00ff00;
+padding:6px;
+margin-top:6px;
+}
+.progress{
+width:100%;
+border:1px solid #00ff00;
+margin-top:8px;
+}
+.progress-bar{
+width:0%;
+height:18px;
+background:#00ff00;
+}
+.database{
+border:1px solid #00ff00;
+margin-top:10px;
+padding:8px;
+display:none;
+}
+table{
+width:100%;
+border-collapse:collapse;
+}
+td,th{
+border:1px solid #00ff00;
+padding:4px;
+text-align:center;
+}
+.top-info{
+margin-top:5px;
 }
 </style>
 </head>
@@ -42,67 +74,139 @@ h1 {
 <canvas id="matrix"></canvas>
 
 <div class="container">
-    <h1>💀 SYSTEM LIVE MONITOR 💀</h1>
 
-    <div class="card">
-        <h2>🕒 LIVE TIME</h2>
-        <p id="clock"></p>
-    </div>
+<h1>💀 SUPREME DARK LAB 4.0 💀</h1>
 
-    <div class="card">
-        <h2>🌐 NETWORK STATUS</h2>
-        <p id="network"></p>
-    </div>
+<div class="top-info">
+⏰ <span id="clock"></span> |
+🌐 <span id="network"></span> |
+💾 <span id="ram"></span>
+</div>
 
-    <div class="card">
-        <h2>💾 RAM USAGE</h2>
-        <p id="ram"></p>
-    </div>
+<select id="method">
+<option>Brute Force</option>
+<option>Phishing</option>
+<option>WiFi Crack</option>
+<option>Social Engineering</option>
+<option>Dark Web</option>
+</select>
+<br>
+<button onclick="startHack()">START</button>
+
+<div class="progress">
+<div class="progress-bar" id="bar"></div>
+</div>
+
+<div id="terminal"></div>
+
+<h3>🔐 Fake Login</h3>
+<input placeholder="Username">
+<input type="password" placeholder="Password">
+<button onclick="fakeLogin()">Login</button>
+
+<div class="database" id="database">
+<h3>📂 Database Records (SIMULATION)</h3>
+<table id="table">
+<tr><th>ID</th><th>User</th><th>Email</th><th>Action</th></tr>
+<tr><td>1</td><td>admin</td><td>admin@mail.com</td><td><button onclick="deleteRow(this)">Delete</button></td></tr>
+<tr><td>2</td><td>jana</td><td>jana@mail.com</td><td><button onclick="deleteRow(this)">Delete</button></td></tr>
+</table>
+<br>
+<input id="newUser" placeholder="New User">
+<input id="newEmail" placeholder="New Email">
+<button onclick="addRow()">Add Record</button>
+</div>
+
+<br>
+<button onclick="changeTheme('#00ff00')">Green</button>
+<button onclick="changeTheme('red')">Red</button>
+<button onclick="changeTheme('#00bfff')">Blue</button>
+
 </div>
 
 <script>
-// Clock
-function updateClock(){
-    document.getElementById("clock").innerText =
-        new Date().toLocaleString();
-}
-setInterval(updateClock,1000);
+const terminal=document.getElementById("terminal");
+const bar=document.getElementById("bar");
+const database=document.getElementById("database");
 
-// Network
-function updateNetwork(){
-    document.getElementById("network").innerText =
-        navigator.onLine ? "ONLINE ✅" : "OFFLINE ❌";
+function randomIP(){
+return Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255);
 }
-setInterval(updateNetwork,1000);
 
-// RAM
-function updateRAM(){
-    if(performance.memory){
-        let ram = performance.memory.usedJSHeapSize/1048576;
-        document.getElementById("ram").innerText =
-        ram.toFixed(2)+" MB Used";
-    }else{
-        document.getElementById("ram").innerText =
-        "RAM Info Not Supported";
-    }
+function type(text){
+terminal.innerHTML+=text+"<br>";
+terminal.scrollTop=terminal.scrollHeight;
 }
-setInterval(updateRAM,2000);
 
-// Matrix Background
+function startHack(){
+terminal.innerHTML="";
+database.style.display="none";
+bar.style.width="0%";
+let percent=0;
+type("Target: "+randomIP());
+type("Method: "+document.getElementById("method").value);
+let interval=setInterval(()=>{
+percent+=5;
+bar.style.width=percent+"%";
+let logs=["Bypassing firewall...","Injecting exploit...","Decrypting files...","Extracting database..."];
+type(logs[Math.floor(Math.random()*logs.length)]);
+if(percent>=100){
+clearInterval(interval);
+type("ACCESS GRANTED ✅ (SIMULATION)");
+database.style.display="block";
+}
+},400);
+}
+
+function fakeLogin(){
+type("Capturing credentials...");
+setTimeout(()=>{type("Login Failed ❌ (SIMULATION)");},1500);
+}
+
+function addRow(){
+let user=document.getElementById("newUser").value;
+let email=document.getElementById("newEmail").value;
+if(user && email){
+let table=document.getElementById("table");
+let row=table.insertRow();
+row.innerHTML="<td>"+(table.rows.length-1)+"</td><td>"+user+"</td><td>"+email+"</td><td><button onclick='deleteRow(this)'>Delete</button></td>";
+}
+}
+
+function deleteRow(btn){
+btn.parentElement.parentElement.remove();
+}
+
+function changeTheme(color){
+document.body.style.color=color;
+}
+
+/* Clock */
+setInterval(()=>{document.getElementById("clock").innerText=new Date().toLocaleTimeString();},1000);
+
+/* Network */
+setInterval(()=>{document.getElementById("network").innerText=navigator.onLine?"ONLINE":"OFFLINE";},1000);
+
+/* RAM */
+setInterval(()=>{
+if(performance.memory){
+let ram=performance.memory.usedJSHeapSize/1048576;
+document.getElementById("ram").innerText=ram.toFixed(1)+"MB";
+}else{
+document.getElementById("ram").innerText="N/A";
+}
+},2000);
+
+/* Matrix */
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
 canvas.height=window.innerHeight;
 canvas.width=window.innerWidth;
-
-let letters="01";
-letters=letters.split("");
-
+let letters="01".split("");
 let fontSize=14;
 let columns=canvas.width/fontSize;
 let drops=[];
-for(let x=0;x<columns;x++)
-drops[x]=1;
-
+for(let x=0;x<columns;x++) drops[x]=1;
 function draw(){
 ctx.fillStyle="rgba(0,0,0,0.05)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -111,8 +215,7 @@ ctx.font=fontSize+"px arial";
 for(let i=0;i<drops.length;i++){
 let text=letters[Math.floor(Math.random()*letters.length)];
 ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
-drops[i]=0;
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
 drops[i]++;
 }
 }
@@ -120,4 +223,4 @@ setInterval(draw,33);
 </script>
 
 </body>
-  </html>
+</html>
